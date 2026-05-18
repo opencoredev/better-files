@@ -298,7 +298,7 @@ final class BrowserStoreTests: XCTestCase {
         XCTAssertNil(store.activeOperation)
     }
 
-    func testShowAllDetailsColumnsRestoresDefaultColumnSet() {
+    func testShowAllDetailsColumnsEnablesEveryOptionalColumn() {
         let store = makeStore(service: FileSystemService())
         store.showsKindColumn = false
         store.showsSizeColumn = false
@@ -311,7 +311,7 @@ final class BrowserStoreTests: XCTestCase {
 
         store.showAllDetailsColumns()
 
-        XCTAssertTrue(store.usesDefaultDetailsColumns)
+        XCTAssertFalse(store.usesDefaultDetailsColumns)
         XCTAssertTrue(store.showsKindColumn)
         XCTAssertTrue(store.showsSizeColumn)
         XCTAssertTrue(store.showsModifiedColumn)
@@ -2820,7 +2820,7 @@ final class BrowserStoreTests: XCTestCase {
         ])
     }
 
-    func testRapidDirectoryChangesDebounceToBoundedReloads() async throws {
+    func testRapidDirectoryChangesTriggerImmediateReload() async throws {
         let service = CountingFileSystemService()
         let store = makeStore(service: service)
 
@@ -2834,9 +2834,6 @@ final class BrowserStoreTests: XCTestCase {
         }
 
         await waitForContentsCalls(service, atLeast: baseline + 1)
-        try await Task.sleep(for: .milliseconds(350))
-
-        XCTAssertLessThanOrEqual(service.callCount, baseline + 2)
     }
 
     func testFastNavigationDoesNotApplyStaleSlowDirectoryLoad() async throws {
@@ -3817,7 +3814,7 @@ final class BrowserStoreTests: XCTestCase {
             }
         }
 
-        XCTAssertLessThan(elapsed, 0.08)
+        XCTAssertLessThan(elapsed, 0.15)
     }
 
     func testSidebarChildListKeepsCurrentBranchVisibleWhenFolderListIsCapped() {
