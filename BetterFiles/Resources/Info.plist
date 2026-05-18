@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>better-files</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>better-files</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>SUAllowsAutomaticUpdates</key>
+	<true/>
+	<key>SUAutomaticallyUpdate</key>
+	<false/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://github.com/opencoredev/better-files/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>$(SPARKLE_PUBLIC_ED_KEY)</string>
+	<key>SUShowReleaseNotes</key>
+	<true/>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>better-files needs Desktop access so it can browse, search, copy, move, rename, delete, and manage files you choose there.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>better-files needs Documents access so it can browse, search, copy, move, rename, delete, and manage files you choose there.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>better-files needs Downloads access so it can browse, search, copy, move, rename, delete, and manage files you choose there.</string>
+	<key>NSNetworkVolumesUsageDescription</key>
+	<string>better-files needs network volume access so it can browse and manage files on connected servers you choose.</string>
+	<key>NSRemovableVolumesUsageDescription</key>
+	<string>better-files needs removable volume access so it can browse and manage files on connected drives you choose.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2026 Leo. All rights reserved.</string>
+</dict>
+</plist>

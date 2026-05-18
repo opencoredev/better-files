@@ -1,0 +1,536 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		23150EBEFB4A49AA4D6BCE61 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFA62FC4A494B9E8E13FFB /* FileItem.swift */; };
+		60204A20C84C4A9315E4FD4B /* BrowserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A766581E0134B46A8AFC1325 /* BrowserStore.swift */; };
+		744058C3BC617221A60DFAB5 /* BrowserStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B8222D14FFC755FE2DFCE7 /* BrowserStoreTests.swift */; };
+		9463CC8D60995C71D25BA59A /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = E47438FA99F0621EB47961B5 /* Sparkle */; };
+		D42084DA46249D73DB6BE4BC /* FileSystemServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5202637914A9F52C3DAA4F /* FileSystemServiceTests.swift */; };
+		D85FCEF0E7CE5D9D75D72A36 /* FileSystemService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B539BD6C86D5B895DABD59B /* FileSystemService.swift */; };
+		EB84C4CF6EADD18AE51136B6 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AE3E2ED8D0DCFB2B93D191 /* BrowserView.swift */; };
+		F102556F52D42ACFAAC08AAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52D00982CC45CE1E86D65E0A /* Assets.xcassets */; };
+		F51E826A5F05A7BC8D7804A3 /* BetterFilesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D0A32096AE20C4A9E163A3 /* BetterFilesApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ED114285343F445A87D1946D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A8ED0DF4EF58E93E15AB343 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4EFA4F6E6E9F7BE1698BB15F;
+			remoteInfo = BetterFiles;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		213AB60D633C21E7A931E27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		24B1D1ED42D2A2C0E37F0130 /* BetterFiles.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BetterFiles.entitlements; sourceTree = "<group>"; };
+		4B0805D5B968B63747465A7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4B539BD6C86D5B895DABD59B /* FileSystemService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemService.swift; sourceTree = "<group>"; };
+		52D00982CC45CE1E86D65E0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		63A4181523E46065F55B1BBC /* BetterFiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetterFiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7232EB85DB284D083C8BF786 /* BetterFilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BetterFilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		80EFA62FC4A494B9E8E13FFB /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
+		9B5202637914A9F52C3DAA4F /* FileSystemServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemServiceTests.swift; sourceTree = "<group>"; };
+		A2B8222D14FFC755FE2DFCE7 /* BrowserStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserStoreTests.swift; sourceTree = "<group>"; };
+		A766581E0134B46A8AFC1325 /* BrowserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserStore.swift; sourceTree = "<group>"; };
+		E8AE3E2ED8D0DCFB2B93D191 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
+		F0D0A32096AE20C4A9E163A3 /* BetterFilesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterFilesApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DEF33A8C03E89EDD28A9F023 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9463CC8D60995C71D25BA59A /* Sparkle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0307213F7BA082B426A72B35 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F0D0A32096AE20C4A9E163A3 /* BetterFilesApp.swift */,
+				A766581E0134B46A8AFC1325 /* BrowserStore.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		4A305CE77350AAACC2F0A5AB /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				E8AE3E2ED8D0DCFB2B93D191 /* BrowserView.swift */,
+			);
+			path = Browser;
+			sourceTree = "<group>";
+		};
+		5F22738F2F16FCBB534296FA /* BetterFiles */ = {
+			isa = PBXGroup;
+			children = (
+				0307213F7BA082B426A72B35 /* App */,
+				8706BD68818711CE59230229 /* Features */,
+				D0AEDAB9E105F13FDFBE2015 /* Models */,
+				A0A47560BD973B4B80EBDBBD /* Resources */,
+				9EB0D42D14F025AADDC1C6D4 /* Services */,
+			);
+			path = BetterFiles;
+			sourceTree = "<group>";
+		};
+		85A0DD7F5190AB415EC32CA9 /* BetterFilesTests */ = {
+			isa = PBXGroup;
+			children = (
+				A2B8222D14FFC755FE2DFCE7 /* BrowserStoreTests.swift */,
+				9B5202637914A9F52C3DAA4F /* FileSystemServiceTests.swift */,
+				213AB60D633C21E7A931E27B /* Info.plist */,
+			);
+			path = BetterFilesTests;
+			sourceTree = "<group>";
+		};
+		8706BD68818711CE59230229 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				4A305CE77350AAACC2F0A5AB /* Browser */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		9EB0D42D14F025AADDC1C6D4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4B539BD6C86D5B895DABD59B /* FileSystemService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A0A47560BD973B4B80EBDBBD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				52D00982CC45CE1E86D65E0A /* Assets.xcassets */,
+				24B1D1ED42D2A2C0E37F0130 /* BetterFiles.entitlements */,
+				4B0805D5B968B63747465A7C /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D0AEDAB9E105F13FDFBE2015 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				80EFA62FC4A494B9E8E13FFB /* FileItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D17A227EA427170989C50551 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				63A4181523E46065F55B1BBC /* BetterFiles.app */,
+				7232EB85DB284D083C8BF786 /* BetterFilesTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DB3B4B0BC4E626FFF7027AE4 = {
+			isa = PBXGroup;
+			children = (
+				5F22738F2F16FCBB534296FA /* BetterFiles */,
+				85A0DD7F5190AB415EC32CA9 /* BetterFilesTests */,
+				D17A227EA427170989C50551 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		05597AB8A13C0AA83EBD7E52 /* BetterFilesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A2D2725ABC147966E73F34E /* Build configuration list for PBXNativeTarget "BetterFilesTests" */;
+			buildPhases = (
+				001794E1A7EE8AC5B2701D43 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				629C774C07FB403DC076ACE0 /* PBXTargetDependency */,
+			);
+			name = BetterFilesTests;
+			packageProductDependencies = (
+			);
+			productName = BetterFilesTests;
+			productReference = 7232EB85DB284D083C8BF786 /* BetterFilesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4EFA4F6E6E9F7BE1698BB15F /* BetterFiles */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3CBED0CD9E7EE68D7E9C3CE /* Build configuration list for PBXNativeTarget "BetterFiles" */;
+			buildPhases = (
+				F223C4F1E05B18082CBB8BDF /* Sources */,
+				CC9B216DA6E595F4F0C0F6F1 /* Resources */,
+				DEF33A8C03E89EDD28A9F023 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BetterFiles;
+			packageProductDependencies = (
+				E47438FA99F0621EB47961B5 /* Sparkle */,
+			);
+			productName = BetterFiles;
+			productReference = 63A4181523E46065F55B1BBC /* BetterFiles.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A8ED0DF4EF58E93E15AB343 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					05597AB8A13C0AA83EBD7E52 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					4EFA4F6E6E9F7BE1698BB15F = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 5741EEB743A5182D2A86C2E8 /* Build configuration list for PBXProject "better-files" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = DB3B4B0BC4E626FFF7027AE4;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B0D24A6BB3247F069DF71924 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4EFA4F6E6E9F7BE1698BB15F /* BetterFiles */,
+				05597AB8A13C0AA83EBD7E52 /* BetterFilesTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC9B216DA6E595F4F0C0F6F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F102556F52D42ACFAAC08AAF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		001794E1A7EE8AC5B2701D43 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				744058C3BC617221A60DFAB5 /* BrowserStoreTests.swift in Sources */,
+				D42084DA46249D73DB6BE4BC /* FileSystemServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F223C4F1E05B18082CBB8BDF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F51E826A5F05A7BC8D7804A3 /* BetterFilesApp.swift in Sources */,
+				60204A20C84C4A9315E4FD4B /* BrowserStore.swift in Sources */,
+				EB84C4CF6EADD18AE51136B6 /* BrowserView.swift in Sources */,
+				23150EBEFB4A49AA4D6BCE61 /* FileItem.swift in Sources */,
+				D85FCEF0E7CE5D9D75D72A36 /* FileSystemService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		629C774C07FB403DC076ACE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4EFA4F6E6E9F7BE1698BB15F /* BetterFiles */;
+			targetProxy = ED114285343F445A87D1946D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09439470DE596864455F1BC6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BetterFiles/Resources/BetterFiles.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BetterFiles/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.leo.better-files";
+				PRODUCT_MODULE_NAME = BetterFiles;
+				PRODUCT_NAME = "better-files";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0DCFFD63D3296305B13F6236 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SPARKLE_PUBLIC_ED_KEY = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		1223BD468A8F0E7A179345FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BetterFilesTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.leo.better-files.tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/better-files.app/Contents/MacOS/better-files";
+			};
+			name = Release;
+		};
+		276584EB7109EC13ADB50124 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BetterFiles/Resources/BetterFiles.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BetterFiles/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.leo.better-files";
+				PRODUCT_MODULE_NAME = BetterFiles;
+				PRODUCT_NAME = "better-files";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2D47B88D43316FC73E08C5F9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SPARKLE_PUBLIC_ED_KEY = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		41A85065FC1424D440EF2D69 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BetterFilesTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.leo.better-files.tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/better-files.app/Contents/MacOS/better-files";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4A2D2725ABC147966E73F34E /* Build configuration list for PBXNativeTarget "BetterFilesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41A85065FC1424D440EF2D69 /* Debug */,
+				1223BD468A8F0E7A179345FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5741EEB743A5182D2A86C2E8 /* Build configuration list for PBXProject "better-files" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D47B88D43316FC73E08C5F9 /* Debug */,
+				0DCFFD63D3296305B13F6236 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B3CBED0CD9E7EE68D7E9C3CE /* Build configuration list for PBXNativeTarget "BetterFiles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				276584EB7109EC13ADB50124 /* Debug */,
+				09439470DE596864455F1BC6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B0D24A6BB3247F069DF71924 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E47438FA99F0621EB47961B5 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B0D24A6BB3247F069DF71924 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 2A8ED0DF4EF58E93E15AB343 /* Project object */;
+}

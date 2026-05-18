@@ -1,0 +1,142 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: better-files
+  SCHEME: BetterFiles
+  SPARKLE_VERSION: 2.9.2
+
+jobs:
+  release:
+    name: Build and publish macOS release
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate release secrets
+        env:
+          SPARKLE_PUBLIC_ED_KEY: ${{ secrets.SPARKLE_PUBLIC_ED_KEY }}
+          SPARKLE_PRIVATE_ED_KEY: ${{ secrets.SPARKLE_PRIVATE_ED_KEY }}
+        run: |
+          test -n "$SPARKLE_PUBLIC_ED_KEY" || { echo "Missing SPARKLE_PUBLIC_ED_KEY"; exit 1; }
+          test -n "$SPARKLE_PRIVATE_ED_KEY" || { echo "Missing SPARKLE_PRIVATE_ED_KEY"; exit 1; }
+
+      - name: Install build tools
+        run: |
+          brew update
+          brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -scheme "$SCHEME" \
+            -destination 'platform=macOS' \
+            -derivedDataPath .derived-ci-test \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build release app
+        env:
+          SPARKLE_PUBLIC_ED_KEY: ${{ secrets.SPARKLE_PUBLIC_ED_KEY }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          BUILD_NUMBER="${GITHUB_RUN_NUMBER}"
+
+          xcodebuild clean build \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath .derived-release \
+            ARCHS="arm64 x86_64" \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=YES \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="-" \
+            DEVELOPMENT_TEAM="" \
+            MARKETING_VERSION="$VERSION" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            SPARKLE_PUBLIC_ED_KEY="$SPARKLE_PUBLIC_ED_KEY"
+
+          APP_PATH=".derived-release/Build/Products/Release/${APP_NAME}.app"
+          test -d "$APP_PATH"
+          codesign --verify --deep --strict "$APP_PATH"
+
+      - name: Package app, DMG, and Sparkle appcast
+        env:
+          SPARKLE_PRIVATE_ED_KEY: ${{ secrets.SPARKLE_PRIVATE_ED_KEY }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          DIST="dist"
+          APP_PATH=".derived-release/Build/Products/Release/${APP_NAME}.app"
+          ZIP_NAME="${APP_NAME}-macos-universal.zip"
+          DMG_NAME="${APP_NAME}-macos-universal.dmg"
+          APPCAST_DIR="${DIST}/appcast-source"
+          SPARKLE_DIR="/tmp/Sparkle-for-SPM"
+
+          rm -rf "$DIST" "$SPARKLE_DIR" /tmp/Sparkle-for-SPM.zip
+          mkdir -p "$DIST" "$APPCAST_DIR" "${DIST}/dmg-root"
+
+          cat > "${DIST}/RELEASE_NOTES.md" <<EOF
+          # better-files ${VERSION}
+
+          This is an experimental beta release. The app is not Apple Developer ID signed or notarized yet.
+
+          If macOS blocks launch, run:
+
+          \`\`\`sh
+          xattr -dr com.apple.quarantine /Applications/better-files.app
+          open /Applications/better-files.app
+          \`\`\`
+          EOF
+
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "${APPCAST_DIR}/${ZIP_NAME}"
+          cp "${DIST}/RELEASE_NOTES.md" "${APPCAST_DIR}/${APP_NAME}-macos-universal.md"
+
+          cp -R "$APP_PATH" "${DIST}/dmg-root/"
+          hdiutil create \
+            -volname "better-files" \
+            -srcfolder "${DIST}/dmg-root" \
+            -ov \
+            -format UDZO \
+            "${DIST}/${DMG_NAME}"
+
+          curl -L \
+            "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-for-Swift-Package-Manager.zip" \
+            -o /tmp/Sparkle-for-SPM.zip
+          unzip -q /tmp/Sparkle-for-SPM.zip -d "$SPARKLE_DIR"
+
+          echo "$SPARKLE_PRIVATE_ED_KEY" | \
+            "${SPARKLE_DIR}/bin/generate_appcast" \
+              --ed-key-file - \
+              --download-url-prefix "https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/" \
+              --link "https://github.com/${GITHUB_REPOSITORY}" \
+              --embed-release-notes \
+              -o "${DIST}/appcast.xml" \
+              "$APPCAST_DIR"
+
+          cp "${APPCAST_DIR}/${ZIP_NAME}" "${DIST}/${ZIP_NAME}"
+          (cd "$DIST" && shasum -a 256 "$ZIP_NAME" "$DMG_NAME" appcast.xml > SHA256SUMS.txt)
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: better-files ${{ github.ref_name }}
+          body_path: dist/RELEASE_NOTES.md
+          files: |
+            dist/better-files-macos-universal.zip
+            dist/better-files-macos-universal.dmg
+            dist/appcast.xml
+            dist/SHA256SUMS.txt
