@@ -5292,19 +5292,36 @@ final class BrowserStore {
     }
 
     private nonisolated static func setFinderTags(_ tagNames: [String], for url: URL) throws -> URL {
-        guard #available(macOS 26.0, *) else {
-            throw NSError(
-                domain: "BetterFiles.FinderTags",
-                code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Editing Finder tags requires macOS 26 or newer."]
-            )
+        var resolvedURL = url.standardizedFileURL
+        try writeFinderTags(tagNames, for: resolvedURL)
+        return resolvedURL
+    }
+
+    private nonisolated static func writeFinderTags(_ tagNames: [String], for url: URL) throws {
+        let attributeName = "com.apple.metadata:_kMDItemUserTags"
+
+        guard !tagNames.isEmpty else {
+            let result = removexattr(url.path, attributeName, 0)
+            if result != 0 && errno != ENOATTR {
+                throw POSIXError(POSIXErrorCode(rawValue: errno) ?? .EIO)
+            }
+            return
         }
 
-        var resolvedURL = url.standardizedFileURL
-        var values = URLResourceValues()
-        values.tagNames = tagNames
-        try resolvedURL.setResourceValues(values)
-        return resolvedURL
+        let finderTagValues = tagNames.map { "\($0)\n0" }
+        let data = try PropertyListSerialization.data(
+            fromPropertyList: finderTagValues,
+            format: .binary,
+            options: 0
+        )
+
+        let result = data.withUnsafeBytes { buffer in
+            setxattr(url.path, attributeName, buffer.baseAddress, buffer.count, 0, 0)
+        }
+
+        if result != 0 {
+            throw POSIXError(POSIXErrorCode(rawValue: errno) ?? .EIO)
+        }
     }
 
     private nonisolated static func performClearAccessControl(_ urls: [URL], context: FileOperationContext) throws -> FileOperationResult {
@@ -6591,11 +6608,40 @@ final class BrowserStore {
     }
 
     private static func finderTagNames(for url: URL) -> [String] {
-        guard let tagNames = try? url.resourceValues(forKeys: [.tagNamesKey]).tagNames else {
+        if let tagNames = try? url.resourceValues(forKeys: [.tagNamesKey]).tagNames,
+           !tagNames.isEmpty {
+            return tagNames.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        }
+
+        return finderTagNamesFromMetadataAttribute(for: url)
+    }
+
+    private static func finderTagNamesFromMetadataAttribute(for url: URL) -> [String] {
+        let attributeName = "com.apple.metadata:_kMDItemUserTags"
+        let length = getxattr(url.path, attributeName, nil, 0, 0, 0)
+
+        guard length > 0 else {
             return []
         }
 
-        return tagNames.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        var data = Data(count: length)
+        let readLength = data.withUnsafeMutableBytes { buffer in
+            getxattr(url.path, attributeName, buffer.baseAddress, buffer.count, 0, 0)
+        }
+
+        guard readLength > 0,
+              let values = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String]
+        else {
+            return []
+        }
+
+        return values.compactMap { value in
+            let name = value.split(separator: "\n", maxSplits: 1, omittingEmptySubsequences: false)
+                .first
+                .map(String.init)?
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            return name?.isEmpty == false ? name : nil
+        }
     }
 
     private static func normalizedFinderTags(from rawValue: String) -> [String] {

@@ -494,17 +494,11 @@ final class BrowserStoreTests: XCTestCase {
     }
 
     func testInspectorSummaryShowsFinderTagsForSingleSelection() throws {
-        guard #available(macOS 26.0, *) else {
-            throw XCTSkip("Setting Finder tags through URLResourceValues requires macOS 26 or newer.")
-        }
-
         let store = makeStore()
         var taggedURL = temporaryDirectory.appendingPathComponent("tagged.txt")
         try Data("tagged".utf8).write(to: taggedURL)
 
-        var resourceValues = URLResourceValues()
-        resourceValues.tagNames = ["Client", "Review"]
-        try taggedURL.setResourceValues(resourceValues)
+        try setFinderTags(["Client", "Review"], for: taggedURL)
 
         let file = makeItem(name: "tagged.txt", kind: .file, byteCount: 6)
         store.tabs[0].items = [file]
@@ -584,10 +578,6 @@ final class BrowserStoreTests: XCTestCase {
     }
 
     func testSetSelectedItemsFinderTagsUpdatesAndClearsTags() async throws {
-        guard #available(macOS 26.0, *) else {
-            throw XCTSkip("Setting Finder tags through URLResourceValues requires macOS 26 or newer.")
-        }
-
         let store = makeStore(service: FileSystemService())
         let fileURL = temporaryDirectory.appendingPathComponent("tag-me.txt")
         try Data("tags".utf8).write(to: fileURL)
@@ -598,7 +588,7 @@ final class BrowserStoreTests: XCTestCase {
         XCTAssertTrue(store.setSelectedItemsFinderTags([" Client ", "Review", "client", ""]))
         await waitForFileOperation(store)
 
-        XCTAssertEqual(try fileURL.resourceValues(forKeys: [.tagNamesKey]).tagNames, ["Client", "Review"])
+        XCTAssertEqual(try finderTags(for: fileURL), ["Client", "Review"])
         XCTAssertEqual(store.selectedItemIDs, [fileURL.path])
         XCTAssertEqual(store.lastOperationSummary?.label, "Tagged")
         assertPerformanceEvent(in: store, label: "Tagged", itemCount: 1)
@@ -606,7 +596,7 @@ final class BrowserStoreTests: XCTestCase {
         XCTAssertTrue(store.setSelectedItemsFinderTags([]))
         await waitForFileOperation(store)
 
-        XCTAssertEqual(try fileURL.resourceValues(forKeys: [.tagNamesKey]).tagNames ?? [], [])
+        XCTAssertEqual(try finderTags(for: fileURL), [])
         XCTAssertEqual(store.selectedItemIDs, [fileURL.path])
         XCTAssertEqual(store.lastOperationSummary?.label, "Cleared Tags")
         assertPerformanceEvent(in: store, label: "Cleared Tags", itemCount: 1)
@@ -5160,6 +5150,47 @@ private final class CountingFileSystemService: FileSystemServicing, @unchecked S
         limit: Int
     ) throws -> [FileItem] {
         []
+    }
+}
+
+private func setFinderTags(_ tagNames: [String], for url: URL) throws {
+    let attributeName = "com.apple.metadata:_kMDItemUserTags"
+    let storedValues = tagNames.map { "\($0)\n0" }
+    let data = try PropertyListSerialization.data(
+        fromPropertyList: storedValues,
+        format: .binary,
+        options: 0
+    )
+    let result = data.withUnsafeBytes { buffer in
+        setxattr(url.path, attributeName, buffer.baseAddress, buffer.count, 0, 0)
+    }
+    if result != 0 {
+        throw POSIXError(POSIXErrorCode(rawValue: errno) ?? .EIO)
+    }
+}
+
+private func finderTags(for url: URL) throws -> [String] {
+    let attributeName = "com.apple.metadata:_kMDItemUserTags"
+    let length = getxattr(url.path, attributeName, nil, 0, 0, 0)
+
+    guard length > 0 else {
+        return []
+    }
+
+    var data = Data(count: length)
+    let readLength = data.withUnsafeMutableBytes { buffer in
+        getxattr(url.path, attributeName, buffer.baseAddress, buffer.count, 0, 0)
+    }
+    guard readLength > 0,
+          let storedValues = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String]
+    else {
+        return []
+    }
+
+    return storedValues.compactMap { value in
+        value.split(separator: "\n", maxSplits: 1, omittingEmptySubsequences: false)
+            .first
+            .map(String.init)
     }
 }
 
