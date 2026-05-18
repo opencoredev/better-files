@@ -7674,12 +7674,34 @@ private struct LocationIconImage: View {
     }
 }
 
+private struct SendableNativeThumbnail: @unchecked Sendable {
+    let image: NSImage
+}
+
+private enum QuickLookThumbnailRenderer {
+    static func thumbnail(for url: URL, size: CGSize, scale: CGFloat) async -> SendableNativeThumbnail? {
+        await withCheckedContinuation { continuation in
+            let request = QLThumbnailGenerator.Request(
+                fileAt: url,
+                size: size,
+                scale: scale,
+                representationTypes: [.thumbnail]
+            )
+
+            QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { representation, _ in
+                guard let image = representation?.nsImage else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+
+                continuation.resume(returning: SendableNativeThumbnail(image: image))
+            }
+        }
+    }
+}
+
 @MainActor
 private enum NativeThumbnailLibrary {
-    private struct SendableThumbnail: @unchecked Sendable {
-        let image: NSImage
-    }
-
     private static let cache = NSCache<NSString, NSImage>()
     private static var missingThumbnailKeys: Set<String> = []
 
@@ -7701,23 +7723,8 @@ private enum NativeThumbnailLibrary {
             return nil
         }
 
-        let thumbnail: SendableThumbnail? = await withCheckedContinuation { continuation in
-            let request = QLThumbnailGenerator.Request(
-                fileAt: url,
-                size: size,
-                scale: NSScreen.main?.backingScaleFactor ?? 2,
-                representationTypes: [.thumbnail]
-            )
-
-            QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { representation, _ in
-                guard let image = representation?.nsImage else {
-                    continuation.resume(returning: nil)
-                    return
-                }
-
-                continuation.resume(returning: SendableThumbnail(image: image))
-            }
-        }
+        let scale = NSScreen.main?.backingScaleFactor ?? 2
+        let thumbnail = await QuickLookThumbnailRenderer.thumbnail(for: url, size: size, scale: scale)
 
         guard let image = thumbnail?.image else {
             missingThumbnailKeys.insert(cacheKey as String)
