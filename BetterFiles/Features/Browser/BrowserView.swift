@@ -7769,6 +7769,10 @@ private enum FileIconLibrary {
         let displayName: String
     }
 
+    private struct SendableImage: @unchecked Sendable {
+        let image: NSImage
+    }
+
     private static let cache = NSCache<NSString, NSImage>()
     private static var missingApplicationBadgeExtensions: Set<String> = []
     private static var applicationMetadataCache: [String: ApplicationMetadata] = [:]
@@ -8135,8 +8139,8 @@ private enum FileIconLibrary {
         let icon = await Task.detached(priority: .utility) {
             let icon = NSWorkspace.shared.icon(forFile: path)
             icon.size = NSSize(width: 64, height: 64)
-            return icon
-        }.value
+            return SendableImage(image: icon)
+        }.value.image
 
         cache.setObject(icon, forKey: cacheKey)
         return icon
@@ -8151,8 +8155,8 @@ private enum FileIconLibrary {
         let icon = await Task.detached(priority: .utility) {
             let icon = NSWorkspace.shared.icon(for: contentType)
             icon.size = NSSize(width: 64, height: 64)
-            return icon
-        }.value
+            return SendableImage(image: icon)
+        }.value.image
 
         cache.setObject(icon, forKey: cacheKey)
         return icon
@@ -8178,8 +8182,8 @@ private enum FileIconLibrary {
                 }
             }
             icon.size = NSSize(width: 64, height: 64)
-            return icon
-        }.value
+            return SendableImage(image: icon)
+        }.value.image
 
         cache.setObject(icon, forKey: cacheKey)
         return icon
