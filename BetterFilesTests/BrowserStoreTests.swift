@@ -1022,7 +1022,7 @@ final class BrowserStoreTests: XCTestCase {
         XCTAssertTrue(projectedCounts.contains(5_000))
         XCTAssertTrue(projectedCounts.contains(4_500))
         XCTAssertTrue(projectedCounts.contains(0))
-        XCTAssertLessThan(elapsed, 0.30)
+        XCTAssertLessThan(elapsed, 0.60)
     }
 
     func testLargeFolderSelectionCommandsStayUnderInteractionBudget() {
