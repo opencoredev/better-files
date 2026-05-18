@@ -4,8 +4,10 @@ cask "better-files" do
 
   url "https://github.com/opencoredev/better-files/releases/latest/download/better-files-macos-universal.dmg"
   name "better-files"
-  desc "Experimental native macOS file manager"
+  desc "Experimental native file manager"
   homepage "https://github.com/opencoredev/better-files"
+
+  depends_on macos: :sonoma
 
   app "better-files.app"
 
