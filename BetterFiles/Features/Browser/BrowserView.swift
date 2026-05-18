@@ -7676,6 +7676,10 @@ private struct LocationIconImage: View {
 
 @MainActor
 private enum NativeThumbnailLibrary {
+    private struct SendableThumbnail: @unchecked Sendable {
+        let image: NSImage
+    }
+
     private static let cache = NSCache<NSString, NSImage>()
     private static var missingThumbnailKeys: Set<String> = []
 
@@ -7697,7 +7701,7 @@ private enum NativeThumbnailLibrary {
             return nil
         }
 
-        let image = await withCheckedContinuation { continuation in
+        let thumbnail: SendableThumbnail? = await withCheckedContinuation { continuation in
             let request = QLThumbnailGenerator.Request(
                 fileAt: url,
                 size: size,
@@ -7706,11 +7710,16 @@ private enum NativeThumbnailLibrary {
             )
 
             QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { representation, _ in
-                continuation.resume(returning: representation?.nsImage)
+                guard let image = representation?.nsImage else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+
+                continuation.resume(returning: SendableThumbnail(image: image))
             }
         }
 
-        guard let image else {
+        guard let image = thumbnail?.image else {
             missingThumbnailKeys.insert(cacheKey as String)
             return nil
         }
