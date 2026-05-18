@@ -12,10 +12,11 @@ Release builds are currently not signed or notarized by Apple. macOS may show a 
 
 ### Homebrew
 
-After the first GitHub release exists, install from this repo's tap:
+Install from this repo's cask tap:
 
 ```sh
-brew install --cask opencoredev/better-files/better-files
+brew tap opencoredev/better-files https://github.com/opencoredev/better-files
+brew install --cask better-files
 ```
 
 If macOS blocks the app because it is not notarized, remove the quarantine flag:
