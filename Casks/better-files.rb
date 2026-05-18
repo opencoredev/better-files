@@ -1,8 +1,8 @@
 cask "better-files" do
-  version :latest
-  sha256 :no_check
+  version "0.1.1"
+  sha256 "bc10c6dfc513dc655613b9148cc565a0a70a28c2ee8e95cab3be838435c8d3cb"
 
-  url "https://github.com/opencoredev/better-files/releases/latest/download/better-files-macos-universal.dmg"
+  url "https://github.com/opencoredev/better-files/releases/download/v#{version}/better-files-macos-universal.dmg"
   name "better-files"
   desc "Experimental native file manager"
   homepage "https://github.com/opencoredev/better-files"
