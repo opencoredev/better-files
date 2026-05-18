@@ -10,8 +10,6 @@ final class BrowserStoreTests: XCTestCase {
     private var userDefaultsSuiteName: String!
 
     override func setUp() async throws {
-        try await super.setUp()
-
         temporaryDirectory = FileManager.default.temporaryDirectory
             .appendingPathComponent("BetterFilesStoreTests-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: true)
@@ -29,8 +27,6 @@ final class BrowserStoreTests: XCTestCase {
         if let userDefaults {
             userDefaults.removePersistentDomain(forName: userDefaultsSuiteName)
         }
-
-        try await super.tearDown()
     }
 
     func testBundleDeclaresProtectedFolderUsageDescriptions() {
@@ -495,7 +491,7 @@ final class BrowserStoreTests: XCTestCase {
 
     func testInspectorSummaryShowsFinderTagsForSingleSelection() throws {
         let store = makeStore()
-        var taggedURL = temporaryDirectory.appendingPathComponent("tagged.txt")
+        let taggedURL = temporaryDirectory.appendingPathComponent("tagged.txt")
         try Data("tagged".utf8).write(to: taggedURL)
 
         try setFinderTags(["Client", "Review"], for: taggedURL)
