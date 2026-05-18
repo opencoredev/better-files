@@ -5292,7 +5292,7 @@ final class BrowserStore {
     }
 
     private nonisolated static func setFinderTags(_ tagNames: [String], for url: URL) throws -> URL {
-        var resolvedURL = url.standardizedFileURL
+        let resolvedURL = url.standardizedFileURL
         try writeFinderTags(tagNames, for: resolvedURL)
         return resolvedURL
     }
@@ -6283,59 +6283,72 @@ final class BrowserStore {
             let elapsed = start.duration(to: ContinuousClock.now)
             let elapsedSeconds = Double(elapsed.components.seconds)
                 + Double(elapsed.components.attoseconds) / 1_000_000_000_000_000_000
-            await MainActor.run {
-                guard
-                    let self,
-                    let index = self.tabs.firstIndex(where: { $0.id == tabID }),
-                    self.tabs[index].currentURL == currentURL
-                else {
-                    return
-                }
-
-                switch result {
-                case .success(let items):
-                    self.tabs[index].items = items
-                    let loadedItemsVersion = self.tabs[index].itemsVersion
-                    self.seedNameSortedItemsCacheIfPossible(
-                        tabID: tabID,
-                        itemsVersion: loadedItemsVersion,
-                        items: items,
-                        foldersFirst: foldersFirst
-                    )
-                    self.tabs[index].selectedItemIDs = Self.reconciledSelectionIDs(
-                        self.tabs[index].selectedItemIDs,
-                        availableIn: items
-                    )
-                    self.tabs[index].errorMessage = nil
-                    self.tabs[index].loadSummary = DirectoryLoadSummary(
-                        itemCount: items.count,
-                        elapsedSeconds: elapsedSeconds
-                    )
-                    if let loadSummary = self.tabs[index].loadSummary {
-                        self.cacheDirectoryContentSnapshot(
-                            for: currentURL,
-                            items: items,
-                            loadSummary: loadSummary
-                        )
-                    }
-                    self.recordPerformanceEvent(
-                        label: "Loaded",
-                        itemCount: items.count,
-                        elapsedSeconds: elapsedSeconds,
-                        path: currentURL.path
-                    )
-                case .failure(let error):
-                    self.tabs[index].items = []
-                    self.sortedItemsCaches[tabID] = nil
-                    self.tabs[index].selectedItemIDs = []
-                    self.tabs[index].errorMessage = "Could not read \(currentURL.path): \(error.localizedDescription)"
-                    self.tabs[index].loadSummary = nil
-                }
-
-                self.tabs[index].isLoading = false
-                self.loadTasks[tabID] = nil
-            }
+            await self?.finishDirectoryReload(
+                tabID: tabID,
+                currentURL: currentURL,
+                result: result,
+                elapsedSeconds: elapsedSeconds,
+                foldersFirst: foldersFirst
+            )
         }
+    }
+
+    private func finishDirectoryReload(
+        tabID: BrowserTab.ID,
+        currentURL: URL,
+        result: Result<[FileItem], Error>,
+        elapsedSeconds: Double,
+        foldersFirst: Bool
+    ) {
+        guard
+            let index = tabs.firstIndex(where: { $0.id == tabID }),
+            tabs[index].currentURL == currentURL
+        else {
+            return
+        }
+
+        switch result {
+        case .success(let items):
+            tabs[index].items = items
+            let loadedItemsVersion = tabs[index].itemsVersion
+            seedNameSortedItemsCacheIfPossible(
+                tabID: tabID,
+                itemsVersion: loadedItemsVersion,
+                items: items,
+                foldersFirst: foldersFirst
+            )
+            tabs[index].selectedItemIDs = Self.reconciledSelectionIDs(
+                tabs[index].selectedItemIDs,
+                availableIn: items
+            )
+            tabs[index].errorMessage = nil
+            tabs[index].loadSummary = DirectoryLoadSummary(
+                itemCount: items.count,
+                elapsedSeconds: elapsedSeconds
+            )
+            if let loadSummary = tabs[index].loadSummary {
+                cacheDirectoryContentSnapshot(
+                    for: currentURL,
+                    items: items,
+                    loadSummary: loadSummary
+                )
+            }
+            recordPerformanceEvent(
+                label: "Loaded",
+                itemCount: items.count,
+                elapsedSeconds: elapsedSeconds,
+                path: currentURL.path
+            )
+        case .failure(let error):
+            tabs[index].items = []
+            sortedItemsCaches[tabID] = nil
+            tabs[index].selectedItemIDs = []
+            tabs[index].errorMessage = "Could not read \(currentURL.path): \(error.localizedDescription)"
+            tabs[index].loadSummary = nil
+        }
+
+        tabs[index].isLoading = false
+        loadTasks[tabID] = nil
     }
 
     private func startWatching(tabID: BrowserTab.ID, url: URL) {
